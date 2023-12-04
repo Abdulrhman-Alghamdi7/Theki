@@ -1,10 +1,12 @@
 from flask import Flask, render_template, jsonify, request
 import openai
+import time
 
-api_key = "Your API Key"
+api_key = "API_KEY"
 app = Flask(__name__)
 client = openai.Client(api_key=api_key)
 thread = client.beta.threads.create()
+
 
 math = client.beta.assistants.create(
     name='Mathematics Tutor',
@@ -48,10 +50,18 @@ def askmath(q):
 
     run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=math.id)
 
+    timeout_seconds = 60  # Set your desired timeout in seconds
+    start_time = time.time()
+
     while True:
         run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.completed_at is not None:
             break
+
+        if time.time() - start_time > timeout_seconds:
+            print("Timeout reached. Exiting loop.")
+            break
+
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     response = []
     for i in messages.data:
@@ -59,6 +69,7 @@ def askmath(q):
             for c in i.content:
                 if c.type == 'text':
                     response.append(c.text.value)
+    
     return response[0]
 
 def askphy(q):
@@ -66,10 +77,18 @@ def askphy(q):
 
     run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=phy.id)
 
+    timeout_seconds = 60  # Set your desired timeout in seconds
+    start_time = time.time()
+
     while True:
         run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.completed_at is not None:
             break
+
+        if time.time() - start_time > timeout_seconds:
+            print("Timeout reached. Exiting loop.")
+            break
+
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     response = []
     for i in messages.data:
@@ -77,6 +96,7 @@ def askphy(q):
             for c in i.content:
                 if c.type == 'text':
                     response.append(c.text.value)
+    
     return response[0]
 
 def askche(q):
@@ -84,10 +104,18 @@ def askche(q):
 
     run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=che.id)
 
+    timeout_seconds = 60  # Set your desired timeout in seconds
+    start_time = time.time()
+
     while True:
         run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.completed_at is not None:
             break
+
+        if time.time() - start_time > timeout_seconds:
+            print("Timeout reached. Exiting loop.")
+            break
+
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     response = []
     for i in messages.data:
@@ -95,6 +123,7 @@ def askche(q):
             for c in i.content:
                 if c.type == 'text':
                     response.append(c.text.value)
+    
     return response[0]
 
 def askbio(q):
@@ -102,10 +131,18 @@ def askbio(q):
 
     run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=bio.id)
 
+    timeout_seconds = 60  # Set your desired timeout in seconds
+    start_time = time.time()
+
     while True:
         run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.completed_at is not None:
             break
+
+        if time.time() - start_time > timeout_seconds:
+            print("Timeout reached. Exiting loop.")
+            break
+
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     response = []
     for i in messages.data:
@@ -113,6 +150,7 @@ def askbio(q):
             for c in i.content:
                 if c.type == 'text':
                     response.append(c.text.value)
+    
     return response[0]
 
 def askeng(q):
@@ -120,10 +158,18 @@ def askeng(q):
 
     run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=eng.id)
 
+    timeout_seconds = 60  # Set your desired timeout in seconds
+    start_time = time.time()
+
     while True:
         run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.completed_at is not None:
             break
+
+        if time.time() - start_time > timeout_seconds:
+            print("Timeout reached. Exiting loop.")
+            break
+
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     response = []
     for i in messages.data:
@@ -131,6 +177,7 @@ def askeng(q):
             for c in i.content:
                 if c.type == 'text':
                     response.append(c.text.value)
+    
     return response[0]
 
 def askarb(q):
@@ -138,10 +185,18 @@ def askarb(q):
 
     run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=arb.id)
 
+    timeout_seconds = 60  # Set your desired timeout in seconds
+    start_time = time.time()
+
     while True:
         run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.completed_at is not None:
             break
+
+        if time.time() - start_time > timeout_seconds:
+            print("Timeout reached. Exiting loop.")
+            break
+
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     response = []
     for i in messages.data:
@@ -149,6 +204,7 @@ def askarb(q):
             for c in i.content:
                 if c.type == 'text':
                     response.append(c.text.value)
+    
     return response[0]
 
 @app.route('/')
